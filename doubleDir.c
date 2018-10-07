@@ -47,7 +47,7 @@ void insert(){
         printf("Memory full cannot create new file !!\n");        
     }
     else{
-        strcpy(dirFile[dPos][++Dcount]],Ftemp);
+        strcpy(dirFile[dPos][++Dcount],Ftemp);
         printf("File %s successfully created\n",Ftemp);
     }
     
@@ -61,7 +61,7 @@ void deleteD(){
      }
      if(Fcount[dPos]==-1){
          strcpy(dir[dPos],dir[Dcount]);
-         strcpy(dir[Dcount--],"")
+         strcpy(dir[Dcount--],"");
      }
      else{
          printf("Cannot delete directory as it contains files");

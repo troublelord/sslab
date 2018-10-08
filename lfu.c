@@ -42,7 +42,7 @@ int fifop(){
 	int i=0;
 	while(i<f){
 		mem[i]=ref[i];
-		last[i]=i;
+		last[i]=1;
 		display();
 		pgFault++;
 		i++;
@@ -50,7 +50,7 @@ int fifop(){
 	for(;i<strlen(ref);i++){
 		pos=find(i);
 		if(pos!=-1){
-			last[pos]=i;
+			++last[pos];
 			display();
 			continue;
 		}
@@ -59,7 +59,7 @@ int fifop(){
 			int tpos=-1;
 			int spos=smallest();
 			mem[spos]=ref[i];
-			last[spos]=i;
+			last[spos]=1;
 			pos=(pos+1)%f;
 		}
 		display();

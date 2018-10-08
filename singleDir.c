@@ -7,12 +7,17 @@ char temp[10],dirFile[10][10];
 int count=-1;
 
 void insert(char temp[10]){
+    if(doesExist(temp)){
+    	printf("The file already exists\n");
+    	return;
+    }
+    
     if(count==9){
-        printf("Memory full cannot create new file !!");        
+        printf("Memory full cannot create new file !!\n");        
     }
     else{
         strcpy(dirFile[++count],temp);
-        printf("File %s successfully created",temp);
+        printf("File %s successfully created\n",temp);
     }
     
 }
@@ -30,11 +35,20 @@ void deleteF(char temp[10]){
 void search(char temp[10]){
     for(int i=0;i<=count;i++){
         if(strcmp(dirFile[i],temp)==0){
-            printf("File %s found in the directory",temp);  
+            printf("File %s found in the directory\n",temp);  
             return;
         }
     }
-    printf("File %s not found in the directory",temp);
+    printf("File %s not found in the directory\n",temp);
+}
+
+void doesExist(char temp[10]){
+    for(int i=0;i<=count;i++){
+        if(strcmp(dirFile[i],temp)==0){
+            return 1;
+        }
+    }
+    return 0;
 }
 
 void display(){

@@ -31,26 +31,16 @@ int doesDirExist(){
 
 void insert(){
     int dPos=doesDirExist();
-<<<<<<< HEAD
-    if(dPos==-1){
-=======
     if(dPos!=-1){
->>>>>>> 610b259d27ddcfe4fdb64ab71d1e150e86174998
         if(Dcount==9){
             printf("Memory full cannot create new directory !!\n");
             return;
         }
     	strcpy(dir[++Dcount],Dtemp);
-<<<<<<< HEAD
     	dPos=Dcount;
     }
     if(doesFileExist(dPos)){
-        printf("File %s already exists inside directory %s!!\n",Ftemp,Dtemp);
-=======
-    }
-    if(doesFileExist(dPos)){
         printf("File %s already exists inside directory %s",Ftemp,Dtemp);
->>>>>>> 610b259d27ddcfe4fdb64ab71d1e150e86174998
         return;
     }
     
@@ -58,11 +48,8 @@ void insert(){
         printf("Memory full cannot create new file !!\n");        
     }
     else{
-<<<<<<< HEAD
         strcpy(dirFile[dPos][++Fcount[dPos]],Ftemp);
-=======
         strcpy(dirFile[dPos][++Dcount],Ftemp);
->>>>>>> 610b259d27ddcfe4fdb64ab71d1e150e86174998
         printf("File %s successfully created\n",Ftemp);
     }
     
@@ -77,10 +64,7 @@ void deleteD(){
      if(Fcount[dPos]==-1){
          strcpy(dir[dPos],dir[Dcount]);
          strcpy(dir[Dcount--],"");
-<<<<<<< HEAD
          printf("Directory %s successfully deleted\n",Dtemp);
-=======
->>>>>>> 610b259d27ddcfe4fdb64ab71d1e150e86174998
      }
      else{
          printf("Cannot delete directory as it contains files");
@@ -90,7 +74,6 @@ void deleteD(){
 
 void deleteF(){
     int dPos=doesDirExist();
-<<<<<<< HEAD
     if(dPos==-1){
     	printf("The directory %s doesnt not exist !!\n",Dtemp);
     	return;
@@ -131,51 +114,17 @@ void search(){
     else{
     	 printf("File %s found in the %s directory\n",Ftemp,Dtemp);
     }
-}
-=======
     if(!doesFileExist(dPos)){
         printf("File doesnt exist");
     }
-    for(int i=0;i<=Fcount[dPos];i++){
-        if(strcmp(dirFile[dPos][i],temp)==0){
-            strcpy(dirFile[i],dirFile[count]);
-            strcpy(dirFile[count--],"");
-            return;
-        }
-    }
     
 }
-/*
-void search(char temp[10]){
-    for(int i=0;i<=count;i++){
-        if(strcmp(dirFile[i],temp)==0){
-            printf("File %s found in the directory\n",temp);  
-            return;
-        }
-    }
-    printf("File %s not found in the directory\n",temp);
-}
-*/
-
-/*
-
-void display(){
-    for(int i=0;i<=count;i++){
-        printf("%s\n",dirFile[i]);   
-    }
-    
-}*/
->>>>>>> 610b259d27ddcfe4fdb64ab71d1e150e86174998
 
 void main(){
-    int ch,exitflag=false;
+    int ch,exitflag=0;
     init();
     while(!exitflag){
-<<<<<<< HEAD
         printf("1.Create new file\n2.Delete a directory\n3.Delete a file\n4.Search for a file\n5.Display the files\n6.Exit Program\n");
-=======
-        printf("1.Create new file\n2.Delete a file\n3.Search for a file\n4.Display the files\n");
->>>>>>> 610b259d27ddcfe4fdb64ab71d1e150e86174998
         printf("Enter your choice:");
         scanf("%d",&ch);
         switch(ch){
@@ -186,7 +135,6 @@ void main(){
                     insert();
                     break;
             
-<<<<<<< HEAD
             case 2: printf("Enter the directory name:");
                     scanf("%s",Dtemp);
                     deleteD();
@@ -210,27 +158,7 @@ void main(){
                     break;
             
             case 6: printf("Exiting program!!!");
-=======
-          /*  case 2: printf("Enter the directory name:");
-                    scanf("%s",Dtemp);
-                    printf("Enter the file name:");
-                    scanf("%s",Ftemp);
-                    deleteF(temp);
-                    break;
-            
-            case 3:  printf("Enter the directory name:");
-                    scanf("%s",Dtemp);
-                    printf("Enter the file name to be searched:");
-                    scanf("%s",Ftemp);
-                    search(temp);
-                    break;
-            
-            case 4: display();
-                    break;*/
-            
-            case 5: printf("Exiting program!!!");
->>>>>>> 610b259d27ddcfe4fdb64ab71d1e150e86174998
-                    exitflag=true;
+                    exitflag=1;
                     break;
             
         }

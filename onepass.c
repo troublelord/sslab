@@ -1,30 +1,97 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
+#include<math.h>
 
-
+int symcount=0,END=0;
 char buf[25],a[10],b[10],c[10];
 int locctr=0;
 FILE *inf,*outf;
 
+struct OPMAP{
+	char OP[5];
+	char HEX[2];
+};
+
+struct SYMMAP{
+	char OP[5];
+	char HEX[4];
+};
+
+struct SYMMAP SYMTAB[20];
+
+struct OPMAP OPTAB[26]={
+	"ADD","18",
+	"AND","40",
+	"COMP","28",
+	"DIV","24",
+	"J","3C",
+	"JEQ","30",
+	"JGT","34",
+	"JLT","38",
+	"JSUB","48",
+	"LDA","00",
+	"LDCH","50",
+	"LDL","08",
+	"LDX","04",
+	"MUL","20",
+	"OR","44",
+	"RD","D8",
+	"RSUB","4C",
+	"STA","0C",
+	"STCH","54",
+	"STL","14",
+	"STSW","E8",
+	"STX","10",
+	"SUB","1C",
+	"TD","E0",
+	"TIX","2C",
+	"WD","DC"
+};
 
 void onepass(){
 	if(strcmp(b,"START")==0){
 		if(strcmp(c,"")==0)
 			locctr=0;
-		else
-			locctr = atoi(c);	
-		fprintf(outf,"%d\n",locctr);
+		else{
+			int temp = atoi(c),i=0,mul=1;
+			while(temp>0){
+				locctr+=(temp%10) * mul;
+				temp=temp/10;
+				mul*=16;
+			}
+		}	
+		fprintf(outf,"%X",locctr);
+		fprintf(outf,"\t%s\t%s\n",b,c);
 		return;
 	}
+	fprintf(outf,"%X",locctr);
+	fprintf(outf,"\t%s\t%s\n",b,c);
+	int flagsym=0;
 	if(!strcmp(a,"")==0){
+		for(int i=0;i<symcount;i++){
+			if(strcmp(SYMTAB[i].OP,a)==0){
+				printf("ERROR");
+				return;
+			}
+		}
+		strcpy(SYMTAB[symcount].OP,a);
+		char temp[5];
+		sprintf(temp,"%d",locctr);
+		strcpy(SYMTAB[symcount++].HEX,temp);
 	
-	//findsym();
 	}
-	else{
-		
+	int flagop=0;
+	for(int i=0;i<26;i++){
+			if(strcmp(OPTAB[i].OP,b)==0){
+				flagop=1;
+				break;
+			}
+		}
+	if(flagop){
+		locctr+=3;
 	}
-	if(strcmp(b,"WORD")==0){
+	else if(strcmp(b,"WORD")==0){
 		locctr+=3;
 	}
 	else if(strcmp(b,"RESW")==0){
@@ -40,8 +107,7 @@ void onepass(){
 			locctr+=( (strlen(c)-3)%2==0?(strlen(c)-3)/2:(strlen(c)-3)/2+1  );
 	}
 
-	fprintf(outf,"%d\n",locctr);
-	//printf("%d\n",locctr);
+	
 }
 
 void split(){
@@ -76,7 +142,7 @@ void split(){
 		
 	}
 	b[y]='\0';
-	printf("%s",b);
+	//printf("%s",b);
 	for(i++;i<lim;i++){
 		if(buf[i]!='\t'){
 			c[z++]=buf[i];			
@@ -88,21 +154,24 @@ void split(){
 	}
 	c[z]='\0';
 	//printf("%s\n",c);
-	onepass();
+	if(strcmp(b,"END")!=0 )
+		onepass();
+	else{
+		END=1;
+		fprintf(outf,"%X",locctr);
+		fprintf(outf,"\t%s\t%s\n",b,c);
+	}
 
 }
 
 
 void main(){
-	
-	inf = fopen("hi","r");
+	inf = fopen("input","r");
 	outf = fopen("out","w");
-    //int ku=0;
     do{
     	fscanf(inf,"%[^\n]s",buf); 
-        //printf("%s\n", buf); 
-        split();
-        //ku++;
+	if(buf[0]!='.' && !END)
+        	split();
         fscanf(inf,"%c",buf);
         strcpy(buf,"");
         

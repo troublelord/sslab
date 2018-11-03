@@ -2,11 +2,10 @@
 #include<string.h>
 #include<stdlib.h>
 #include<math.h>
-
 int symcount=0,END=0;
 char buf[25],a[10],b[10],c[10];
 int locctr=0;
-FILE *inf,*outf;
+FILE *inf,*outf, *sym;
 
 struct OPMAP{
 	char OP[5];
@@ -48,6 +47,7 @@ struct OPMAP OPTAB[26]={
 	"TIX","2C",
 	"WD","DC"
 };
+//int startadd=0;
 
 void onepass(){
 	if(strcmp(b,"START")==0){
@@ -63,6 +63,7 @@ void onepass(){
 		}	
 		fprintf(outf,"%X",locctr);
 		fprintf(outf,"\t%s\t%s\n",b,c);
+		//startadd=locctr;
 		return;
 	}
 	fprintf(outf,"%X",locctr);
@@ -76,6 +77,7 @@ void onepass(){
 			}
 		}
 		strcpy(SYMTAB[symcount].OP,a);
+		fprintf(sym,"%s\t%X\n",a,locctr);
 		char temp[5];
 		sprintf(temp,"%d",locctr);
 		strcpy(SYMTAB[symcount++].HEX,temp);
@@ -157,6 +159,8 @@ void split(){
 	if(strcmp(b,"END")!=0 )
 		onepass();
 	else{
+		//endadd=locctr;
+		
 		END=1;
 		fprintf(outf,"%X",locctr);
 		fprintf(outf,"\t%s\t%s\n",b,c);
@@ -168,6 +172,7 @@ void split(){
 void main(){
 	inf = fopen("input","r");
 	outf = fopen("out","w");
+	sym=fopen("symtab","w");
     do{
     	fscanf(inf,"%[^\n]s",buf); 
 	if(buf[0]!='.' && !END)
@@ -177,4 +182,6 @@ void main(){
         
 	}while (!feof(inf));
 	fclose(inf);
+	fclose(outf);
+	fclose(sym);
 }
